@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Study Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/variables.css">
+<link rel="stylesheet" href="../css/app.css">
+</head>
+<body>
+<div class="app">
+<nav aria-label="Main"><h1>Study Platform</h1><div id="nav"></div><hr><a href="#" id="logout">Log out</a></nav>
+<main id="main" tabindex="-1"></main>
+</div>
+<dialog id="dlg"></dialog>
+<div id="toast" role="status"></div>
+<script src="../js/auth.js"></script>
+<script>Auth.requireAuth()</script>
+<script src="../js/storage.js"></script>
+<script src="../js/utils.js"></script>
+<script src="../js/recommendations.js"></script>
+<script src="../js/timer.js"></script>
+<script src="../js/views.js"></script>
+<script src="../js/router.js"></script>
+<script src="../js/forms.js"></script>
+<script src="../js/actions.js"></script>
+<script src="../js/sample-data.js"></script>
+<script src="../js/app.js"></script>
+</body>
+</html>
