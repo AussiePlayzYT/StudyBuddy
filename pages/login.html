@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Log in · Study Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style/site.css">
+</head>
+<body>
+<main class="auth"><div class="box">
+  <h1 id="title">Welcome back</h1>
+  <p class="sub" id="sub">Log in to pick up where you left off.</p>
+
+  <div class="tabs" role="tablist">
+    <button role="tab" id="t-login" aria-selected="true">Log in</button>
+    <button role="tab" id="t-signup" aria-selected="false">Sign up</button>
+  </div>
+
+  <div id="gbtn"></div>
+  <div class="or">or use your email</div>
+
+  <form id="f" novalidate>
+    <label id="nameRow" hidden>Name<input id="name" autocomplete="name"></label>
+    <label>Email<input id="email" type="email" autocomplete="email" required></label>
+    <label>Password<input id="pw" type="password" autocomplete="current-password" required></label>
+    <p class="err" id="err" role="alert"></p>
+    <button class="btn" style="width:100%" id="go">Log in</button>
+  </form>
+  <a class="back" href="index.html">Back to home</a>
+</div></main>
+
+<script src="../scripts/auth.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+let mode = "login";
+const go = () => location.href = Auth.CFG.appUrl;
+if (Auth.user()) go();
+
+function setMode(m) {
+  mode = m;
+  const su = m === "signup";
+  $("t-login").setAttribute("aria-selected", !su);
+  $("t-signup").setAttribute("aria-selected", su);
+  $("nameRow").hidden = !su;
+  $("title").textContent = su ? "Create your account" : "Welcome back";
+  $("sub").textContent = su ? "Start planning your study in a minute." : "Log in to pick up where you left off.";
+  $("go").textContent = su ? "Create account" : "Log in";
+  $("pw").autocomplete = su ? "new-password" : "current-password";
+  $("err").textContent = "";
+}
+$("t-login").onclick = () => setMode("login");
+$("t-signup").onclick = () => setMode("signup");
+if (new URLSearchParams(location.search).get("mode") === "signup") setMode("signup");
+
+$("f").onsubmit = async e => {
+  e.preventDefault();
+  const email = $("email").value, pw = $("pw").value, name = $("name").value;
+  if (!email.includes("@") || !pw) return $("err").textContent = "Enter your email and password.";
+  if (mode === "signup" && !name.trim()) return $("err").textContent = "Enter your name.";
+  $("go").disabled = true;
+  try {
+    mode === "signup" ? await Auth.signup(name, email, pw) : await Auth.login(email, pw);
+    go();
+  } catch (x) {
+    $("err").textContent = x.message || "Something went wrong. Try again.";
+    $("go").disabled = false;
+  }
+};
+
+Auth.renderGoogle($("gbtn"), go, msg => $("err").textContent = msg);
+</script>
+</body>
+</html>
