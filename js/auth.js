@@ -4,7 +4,7 @@
 const Auth = (() => {
   const ROOT = new URL("../", document.currentScript.src).href; // site root, whatever page loads this file
   const CFG = {
-    googleClientId: "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com", // paste your OAuth client ID here
+    googleClientId: "975102357812-e3osguv8vvokagfprs19f9j9h0jjd6nv.apps.googleusercontent.com", // paste your OAuth client ID here
     appUrl: ROOT + "pages/app.html" // where to go after signing in
   };
   const USERS = "ssp-users", SESSION = "ssp-session";
