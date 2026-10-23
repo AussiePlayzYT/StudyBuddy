@@ -62,7 +62,7 @@ const Auth = (() => {
 
   function renderGoogle(el, onDone, onError) {
     if (CFG.googleClientId.startsWith("YOUR_")) {
-      el.innerHTML = '<p class="note">Google sign-in isn’t set up yet. Add your client ID in js/auth.js.</p>';
+      el.innerHTML = '<p class="note">Google sign-in isn’t set up yet.</p>';
       return;
     }
     const s = document.createElement("script");

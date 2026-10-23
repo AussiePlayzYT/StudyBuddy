@@ -1,5 +1,5 @@
 /* Page views: dashboard, planner, tasks, subjects, timer, progress, goals, settings. */
-const NAV=[["dashboard","Dashboard"],["planner","Planner"],["tasks","Tasks"],["subjects","Subjects"],["timer","Study timer"],["progress","Progress"],["goals","Goals"],["–"],["soon-notes","Notes"],["soon-quizzes","Quizzes"],["soon-flashcards","Flashcards"],["soon-ai","AI assistant"],["–"],["settings","Profile & settings"]];
+const NAV=[["dashboard","Dashboard"],["planner","Planner"],["tasks","Tasks"],["subjects","Subjects"],["timer","Study timer"],["progress","Progress"],["goals","Goals"],["–"],["soon-notes","Notes"],["soon-quizzes","Quizzes"],["soon-flashcards","Flashcards"],["soon-ai","AI assistant"],["–"],["profile.html","Profile"]];
 const empty=(msg,btn)=>`<div class="card empty"><p>${msg}</p>${btn||""}</div>`;
 const sampleBtn=`<button class="btn ghost" data-act="sample">Load sample data</button>`;
 const taskRow=(k,extra="")=>`<div class="item"><input type="checkbox" style="width:auto;margin:0" data-act="toggle" data-id="${k.id}" ${k.done?"checked":""} aria-label="Complete ${esc(k.title)}"><div class="grow"><span class="${k.done?"done":""}">${esc(k.title)}</span><div class="muted">${esc(label(k.sid,k.tid))} · due ${fmtD(k.due)}${k.est?" · "+k.est+" min":""}</div></div><span class="tag ${k.pri}">${k.pri}</span>${extra}</div>`;
@@ -68,12 +68,6 @@ goals(){
   <div class="grid"><div class="card"><h3>Weekly study goal</h3>${bar(wm/(p.weeklyGoal*60)*100,wm>=p.weeklyGoal*60)}<p class="muted">${(wm/60).toFixed(1)} / ${p.weeklyGoal} hours</p></div>
   <div class="card"><h3>Daily study goal</h3>${bar(mins(TODAY(),TODAY())/p.dailyGoal*100)}<p class="muted">${mins(TODAY(),TODAY())} / ${p.dailyGoal} minutes today</p></div>
   ${S.goals.map(g=>{const r=prog(g);return `<div class="card"><div class="row"><h3>${esc(g.label)}</h3><button class="btn ghost sm" data-act="delGoal" data-id="${g.id}">Delete</button></div>${bar(r.v/r.t*100,r.v>=r.t)}<p class="muted">${r.v} / ${r.t}${r.u}</p></div>`}).join("")}</div>`;
-},
-settings(){
-  const p=S.profile;
-  return `<h2>Profile & settings</h2><p class="sub">Stored in this browser only</p>
-  <div class="card" style="max-width:560px"><p><b>${esc(p.name)}</b> · Year ${p.year}${p.school?" · "+esc(p.school):""} · class of ${p.grad}</p><p class="muted">Daily goal ${p.dailyGoal} min · weekly ${p.weeklyGoal} h · sessions ${p.studyMin} min with ${p.breakMin} min breaks</p>
-  <div class="row" style="justify-content:flex-start"><button class="btn" data-act="editProfile">Edit profile</button><button class="btn ghost" data-act="export">Export data</button><button class="btn ghost" data-act="sample">Load sample data</button><button class="btn danger" data-act="reset">Reset all data</button></div></div>`;
 },
 soon(n){return `<h2>${esc(n[0].toUpperCase()+n.slice(1))}</h2><div class="card empty"><p>This feature is currently under development. It’s planned for a later wave.</p></div>`}
 };

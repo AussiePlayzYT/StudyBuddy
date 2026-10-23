@@ -4,9 +4,6 @@ document.addEventListener("click",e=>{
   const a=b.dataset.act,id=b.dataset.id,done=()=>{save();render()};
   const A={
     sample:()=>{if(S.subjects.length&&!confirm("Replace your current data with sample data?"))return;seed();toast("Sample data loaded")},
-    reset:()=>{if(confirm("Delete all your data? This can’t be undone.")){S=blank();done()}},
-    export:()=>{const l=document.createElement("a");l.href="data:application/json,"+encodeURIComponent(JSON.stringify(S,null,2));l.download="student-data.json";l.click()},
-    editProfile:()=>form("Edit profile",[{k:"name",l:"Name",v:S.profile.name,r:1},{k:"year",l:"Year level",t:"number",v:S.profile.year},{k:"school",l:"School",v:S.profile.school},{k:"grad",l:"Graduation year",t:"number",v:S.profile.grad},{k:"dailyGoal",l:"Daily study goal (min)",t:"number",min:10,v:S.profile.dailyGoal},{k:"weeklyGoal",l:"Weekly study goal (hours)",t:"number",min:1,v:S.profile.weeklyGoal},{k:"studyMin",l:"Session length (min)",t:"number",min:5,v:S.profile.studyMin},{k:"breakMin",l:"Break length (min)",t:"number",min:1,v:S.profile.breakMin}],o=>{["year","grad","dailyGoal","weeklyGoal","studyMin","breakMin"].forEach(k=>o[k]=+o[k]);Object.assign(S.profile,o)}),
     addSubject:()=>subjForm(null,o=>S.subjects.push({id:uid(),topics:[],...o})),
     editSubject:()=>subjForm(subj(id),o=>Object.assign(subj(id),o)),
     delSubject:()=>{if(confirm("Delete this subject, its topics and tasks?")){S.subjects=S.subjects.filter(s=>s.id!==id);S.tasks=S.tasks.filter(k=>k.sid!==id);S.sessions=S.sessions.filter(k=>k.sid!==id);location.hash="subjects";done()}},

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Profile · Study Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/variables.css">
+<link rel="stylesheet" href="../css/app.css">
+<link rel="stylesheet" href="../css/profile.css">
+</head>
+<body class="pf">
+<div class="app">
+<nav aria-label="Main">
+  <h1>Study Platform</h1>
+  <div id="nav">
+    <a href="app.html#dashboard">Dashboard</a>
+    <a href="app.html#planner">Planner</a>
+    <a href="app.html#tasks">Tasks</a>
+    <a href="app.html#subjects">Subjects</a>
+    <a href="app.html#timer">Study timer</a>
+    <a href="app.html#progress">Progress</a>
+    <a href="app.html#goals">Goals</a>
+    <hr>
+    <a href="app.html#soon-notes" class="soon">Notes</a>
+    <a href="app.html#soon-quizzes" class="soon">Quizzes</a>
+    <a href="app.html#soon-flashcards" class="soon">Flashcards</a>
+    <a href="app.html#soon-ai" class="soon">AI assistant</a>
+    <hr>
+    <a href="profile.html" class="on" aria-current="page">Profile</a>
+  </div>
+  <hr><a href="#" id="logout">Log out</a>
+</nav>
+
+<main id="main">
+  <header class="ph">
+    <h2>Profile</h2>
+    <p class="sub">Your details and how the platform plans your study.</p>
+  </header>
+
+  <section class="idcard" aria-label="Profile summary">
+    <div class="avatar" id="av"></div>
+    <div class="idinfo">
+      <h2 id="pvName">Student</h2>
+      <div class="muted" id="pvSub"></div>
+      <div class="facts" id="facts"></div>
+    </div>
+    <div class="idact">
+      <button type="button" class="btn" id="pick">Upload photo</button>
+      <button type="button" class="btn ghost" id="rm">Remove</button>
+      <input type="file" id="file" accept="image/*" hidden>
+    </div>
+  </section>
+
+  <form id="f" novalidate>
+    <section class="sec">
+      <div><h3>Personal details</h3><p class="d">Shown on your dashboard and profile.</p></div>
+      <div class="fields">
+        <div class="f full"><label for="name">Name</label><input id="name" data-k="name" autocomplete="name" maxlength="60"><p class="err" data-e="name"></p></div>
+        <div class="f"><label for="year">Year level</label><select id="year" data-k="year"></select><p class="err" data-e="year"></p></div>
+        <div class="f"><label for="grad">Graduation year</label><select id="grad" data-k="grad"></select><p class="err" data-e="grad"></p></div>
+        <div class="f full"><label for="school">School</label><input id="school" data-k="school" autocomplete="organization" maxlength="80" placeholder="Optional"><p class="err" data-e="school"></p></div>
+      </div>
+    </section>
+
+    <section class="sec">
+      <div><h3>Study preferences</h3><p class="d">Defaults for the timer, planner and recommendations.</p></div>
+      <div class="fields">
+        <div class="f full"><label for="prefTime">Preferred study time</label>
+          <select id="prefTime" data-k="prefTime"><option value="morning">Morning</option><option value="afternoon">Afternoon</option><option value="evening">Evening</option><option value="night">Late night</option><option value="any">No preference</option></select></div>
+        <div class="f"><label for="studyMin">Default study duration</label><div class="unit"><input id="studyMin" data-k="studyMin" type="number" inputmode="numeric"><span>min</span></div><p class="hint">Starting length on the study timer.</p><p class="err" data-e="studyMin"></p></div>
+        <div class="f"><label for="breakMin">Break duration</label><div class="unit"><input id="breakMin" data-k="breakMin" type="number" inputmode="numeric"><span>min</span></div><p class="hint">Rest between sessions.</p><p class="err" data-e="breakMin"></p></div>
+        <div class="f"><label for="dailyGoal">Daily study goal</label><div class="unit"><input id="dailyGoal" data-k="dailyGoal" type="number" inputmode="numeric"><span>min</span></div><p class="hint">Drives the progress bar on your dashboard.</p><p class="err" data-e="dailyGoal"></p></div>
+        <div class="f"><label for="weeklyGoal">Weekly study goal</label><div class="unit"><input id="weeklyGoal" data-k="weeklyGoal" type="number" inputmode="numeric"><span>hours</span></div><p class="hint">Shown on your Goals page.</p><p class="err" data-e="weeklyGoal"></p></div>
+      </div>
+    </section>
+
+    <div class="savebar">
+      <span class="state" id="state" role="status">All changes saved</span>
+      <div class="idact"><button type="button" class="btn ghost" id="discard" disabled>Discard</button><button class="btn" id="save" disabled>Save changes</button></div>
+    </div>
+  </form>
+
+  <section class="sec">
+    <div><h3>Account</h3><p class="d">How you sign in on this device.</p></div>
+    <div>
+      <div class="rowline"><div><b id="acctEmail">—</b><div class="muted" id="acctHow"></div></div><button type="button" class="btn ghost" id="out">Log out</button></div>
+    </div>
+  </section>
+
+  <section class="sec" style="border-bottom:0">
+    <div><h3>Your data</h3><p class="d">Everything is stored in this browser. Back it up or start fresh.</p></div>
+    <div>
+      <div class="rowline"><div><b>Export a backup</b><div class="muted">Download your subjects, tasks, sessions and goals as a file.</div></div><button type="button" class="btn ghost" id="exp">Export</button></div>
+      <div class="rowline"><div><b>Restore from a backup</b><div class="muted">Replaces your current data with a backup file.</div></div><button type="button" class="btn ghost" id="impBtn">Choose file</button><input type="file" id="imp" accept="application/json,.json" hidden></div>
+      <div class="rowline"><div><b>Delete all study data</b><div class="muted">Removes your subjects, tasks, sessions, goals and profile details. Your sign-in stays.</div></div><button type="button" class="btn danger-o" id="wipe">Delete data</button></div>
+    </div>
+  </section>
+</main>
+</div>
+
+<dialog id="dlg">
+  <h3>Delete all study data?</h3>
+  <p class="muted" style="font-size:14px">This permanently removes your subjects, tasks, sessions, goals and profile details from this device. Export a backup first if you might want them back.</p>
+  <div class="row" style="margin-top:16px"><button type="button" class="btn ghost" id="no">Cancel</button><button type="button" class="btn danger" id="yes">Delete data</button></div>
+</dialog>
+<div id="toast" role="status"></div>
+
+<script src="../js/auth.js"></script>
+<script src="../js/profile.js"></script>
+</body>
+</html>
