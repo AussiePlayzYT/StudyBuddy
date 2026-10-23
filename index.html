@@ -2,65 +2,64 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Study Platform: know what to study next</title>
 <meta name="description" content="Plan your study, track your subjects and get a clear recommendation of what to work on next.">
+<meta name="color-scheme" content="light dark">
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/variables.css">
 <link rel="stylesheet" href="css/site.css">
 </head>
 <body>
+<a class="skip" href="#main">Skip to main content</a>
 <header class="top"><div class="wrap">
   <b>Study Platform</b>
-  <nav aria-label="Account" id="acct">
-    <a href="login.html">Log in</a><a class="btn" href="login.html?mode=signup">Sign up</a>
-  </nav>
+  <nav aria-label="Account" id="acct"><a href="login.html">Log in</a><a class="btn" href="login.html?mode=signup">Sign up</a></nav>
 </div></header>
 
-<main>
+<main id="main">
 <section class="hero"><div class="wrap">
   <div>
     <h1>Know what to study next.</h1>
-    <p>Add your subjects and topics, plan your week, run focused sessions, and let the platform tell you where your time will help most.</p>
+    <p>Add your subjects and topics, plan your week, run focused sessions, and let the platform show you where your time will help most.</p>
     <div class="actions">
-      <a class="btn main" href="login.html?mode=signup" id="cta1">Create a free account</a>
+      <a class="btn main" href="login.html?mode=signup" id="cta1">Create an account</a>
       <a class="btn ghost" href="#features">See what’s inside</a>
     </div>
   </div>
-  <div class="demo" aria-label="Example recommendation">
-    <h3>Recommended for you today</h3>
-    <div class="it"><div><b>Mathematics – Algebra</b><small>Quiz average 48% · exam in 6 days</small></div><span class="pill hi">45 min</span></div>
-    <div class="it"><div><b>English – Essay draft</b><small>Due in 2 days</small></div><span class="pill">60 min</span></div>
-    <div class="it"><div><b>Biology – Genetics</b><small>Not studied for 10 days</small></div><span class="pill">30 min</span></div>
+  <div class="demo">
+    <h2>How your next session is chosen</h2>
+    <ul>
+      <li>How confident you feel in each topic</li>
+      <li>Your latest quiz results</li>
+      <li>Exams and deadlines that are getting close</li>
+      <li>How long since you last studied it</li>
+    </ul>
   </div>
 </div></section>
 
 <section class="s" id="features"><div class="wrap">
   <h2>Everything your study needs in one place</h2>
-  <p class="lead">Each part of the platform shares the same data, so finishing a session updates your progress, your goals and your next recommendation.</p>
+  <p class="lead">Every page shares the same data, so finishing a session updates your progress, goals and next recommendation.</p>
   <div class="grid">
-    <div class="card"><h3>Subjects and topics</h3><p>Organise each subject into topics and rate your confidence, so weak spots are easy to see.</p></div>
-    <div class="card"><h3>Tasks and deadlines</h3><p>Track assignments with due dates, priorities and time estimates.</p></div>
-    <div class="card"><h3>Weekly planner</h3><p>See study sessions, task deadlines and exams together in one week view.</p></div>
-    <div class="card"><h3>Study timer</h3><p>Start a countdown, finish, and rate how productive you were. Every session is saved.</p></div>
-    <div class="card"><h3>Progress and goals</h3><p>Watch study time, task completion and topic progress grow against daily and weekly goals.</p></div>
-    <div class="card"><h3>Smart recommendations</h3><p>A scoring system weighs deadlines, exams, quiz results and time since you last revised.</p></div>
+    <div class="card"><h3>Plan</h3><p>Planner, calendar, tasks, assignments and exams with countdowns and revision plans.</p></div>
+    <div class="card"><h3>Learn</h3><p>Subjects, topics, notes, resources, sticky notes and a drag-and-drop noteboard.</p></div>
+    <div class="card"><h3>Practise</h3><p>Quizzes, flashcards with spaced repetition, and a timed exam mode.</p></div>
+    <div class="card"><h3>Track</h3><p>Goals, progress, analytics and achievements built from your real sessions.</p></div>
+    <div class="card"><h3>Focus</h3><p>A study timer that saves each session and asks how productive you were.</p></div>
+    <div class="card"><h3>Tools</h3><p>Grade calculator, writing checks, a similarity checker and quick calculators.</p></div>
   </div>
 </div></section>
 
-<section class="s" style="background:var(--surface)"><div class="wrap">
+<section class="s alt"><div class="wrap">
   <h2>How it works</h2>
-  <p class="lead">The platform runs on a simple loop that gets sharper the more you use it.</p>
-  <div class="loop"><span>Add subjects and topics</span><i>→</i><span>Plan sessions and tasks</span><i>→</i><span>Study with the timer</span><i>→</i><span>Progress updates</span><i>→</i><span>New recommendation</span></div>
+  <p class="lead">A simple loop that gets sharper the more you use it.</p>
+  <div class="loop"><span>Add subjects and topics</span><i aria-hidden="true">→</i><span>Plan sessions and tasks</span><i aria-hidden="true">→</i><span>Study with the timer</span><i aria-hidden="true">→</i><span>Progress updates</span><i aria-hidden="true">→</i><span>New recommendation</span></div>
 </div></section>
 
-<section class="s soon"><div class="wrap">
-  <h2>Coming next</h2>
-  <p class="lead">These are planned for later releases.</p>
-  <div class="grid">
-    <div class="card"><h3>Notes</h3><p>Write and organise notes by subject and topic.</p></div>
-    <div class="card"><h3>Quizzes and flashcards</h3><p>Test yourself and feed results into your recommendations.</p></div>
-    <div class="card"><h3>AI study assistant</h3><p>Get explanations and practice questions based on your weak areas.</p></div>
-  </div>
+<section class="s"><div class="wrap">
+  <h2>Private by design</h2>
+  <p class="lead">Your study data is saved in this browser on this device. Nothing is uploaded, and you can export or delete it at any time. Works on phones, tablets and desktops, with light, dark and high-contrast themes.</p>
 </div></section>
 
 <section class="cta">
@@ -69,15 +68,19 @@
 </section>
 </main>
 
-<footer><div class="wrap">Your study data is saved in your browser on this device. <a href="login.html">Log in</a></div></footer>
+<footer><div class="wrap">Accounts and data live in your browser on this device. <a href="login.html">Log in</a></div></footer>
 
 <script src="js/auth.js"></script>
 <script>
   const u = Auth.user();
   if (u) {
-    document.getElementById("acct").innerHTML = `<span style="color:#d5e6e4">Hi, ${u.name.split(" ")[0].replace(/[<>&"]/g,"")}</span><a class="btn" href="${Auth.CFG.appUrl}">Open app</a><a href="#" id="out">Log out</a>`;
-    document.getElementById("out").onclick = e => { e.preventDefault(); Auth.logout(); };
-    for (const id of ["cta1", "cta2"]) { const a = document.getElementById(id); a.href = Auth.CFG.appUrl; a.textContent = "Open your dashboard"; }
+    const a = document.getElementById("acct");
+    a.textContent = "";
+    const hi = document.createElement("span"); hi.style.color = "#d5e6e4"; hi.textContent = "Hi, " + (u.name || "there").split(" ")[0];
+    const open = document.createElement("a"); open.className = "btn"; open.href = Auth.CFG.appUrl; open.textContent = "Open app";
+    const out = document.createElement("a"); out.href = "#"; out.textContent = "Log out"; out.onclick = e => { e.preventDefault(); Auth.logout(); };
+    a.append(hi, open, out);
+    for (const id of ["cta1", "cta2"]) { const c = document.getElementById(id); c.href = Auth.CFG.appUrl; c.textContent = "Open your dashboard"; }
   }
 </script>
 </body>

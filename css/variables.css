@@ -1,4 +1,7 @@
-/* Design tokens: colours, radius, shadows, light and dark themes */
-:root{--primary:#0f766e;--accent:#f2a541;--bg:#eef2f1;--surface:#fff;--text:#16282b;--muted:#5d6f72;--success:#16a34a;--warning:#d97706;--danger:#dc2626;--border:#d9e1e0;--side:#12343b;--sidetext:#d5e6e4;--r:10px;--sh:0 1px 2px rgba(18,52,59,.08),0 4px 14px rgba(18,52,59,.05);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
-@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1819;--surface:#15272a;--text:#e4efee;--muted:#93a9ab;--border:#26403f;--side:#0a1213;--primary:#2dd4bf;--sh:none;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#0d1819;--surface:#15272a;--text:#e4efee;--muted:#93a9ab;--border:#26403f;--side:#0a1213;--primary:#2dd4bf;--sh:none;color-scheme:dark}
+/* Design tokens: colours, radius, shadows. Themes: light, dark, high contrast. Text size via --fsn. */
+:root{--primary:#0f766e;--onprimary:#fff;--accent:#f2a541;--bg:#eef2f1;--surface:#fff;--text:#16282b;--muted:#566a6d;--success:#15803d;--warning:#b45309;--danger:#dc2626;--border:#d9e1e0;--side:#12343b;--sidetext:#d5e6e4;--r:10px;--sh:0 1px 2px rgba(18,52,59,.08),0 4px 14px rgba(18,52,59,.05);color-scheme:light}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]):not([data-theme="contrast"]){--bg:#0d1819;--surface:#15272a;--text:#e4efee;--muted:#93a9ab;--border:#26403f;--side:#0a1213;--primary:#2dd4bf;--onprimary:#062b27;--success:#4ade80;--warning:#fbbf24;--danger:#f87171;--sh:none;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0d1819;--surface:#15272a;--text:#e4efee;--muted:#93a9ab;--border:#26403f;--side:#0a1213;--primary:#2dd4bf;--onprimary:#062b27;--success:#4ade80;--warning:#fbbf24;--danger:#f87171;--sh:none;color-scheme:dark}
+:root[data-theme="contrast"]{--bg:#000;--surface:#000;--text:#fff;--muted:#e8e8e8;--border:#fff;--side:#000;--sidetext:#fff;--primary:#ffe14d;--onprimary:#000;--accent:#ffe14d;--success:#6ee7a0;--warning:#fde047;--danger:#ff9a9a;--sh:none;color-scheme:dark}
+html{font-size:calc(16px*var(--fsn,1))}
+[hidden]{display:none!important}
