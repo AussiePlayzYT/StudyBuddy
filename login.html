@@ -8,243 +8,358 @@
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/variables.css">
 <link rel="stylesheet" href="css/site.css">
+<style>
+  [hidden] { display: none !important; }
+  .google-signin {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    min-height: 44px;
+  }
+  .google-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 20px 0;
+    color: var(--muted, #777);
+  }
+  .google-divider::before,
+  .google-divider::after {
+    content: "";
+    height: 1px;
+    flex: 1;
+    background: currentColor;
+    opacity: .25;
+  }
+  .err {
+    color: #d93025;
+    overflow-wrap: anywhere;
+  }
+  button:disabled {
+    opacity: .6;
+    cursor: wait;
+  }
+</style>
 </head>
 <body>
-<main class="auth"><div class="box">
-  <h1 id="title">Welcome back</h1>
-  <p class="sub" id="sub">Log in to pick up where you left off.</p>
+<main class="auth">
+  <div class="box">
+    <h1 id="title">Welcome back</h1>
+    <p class="sub" id="sub">Log in to pick up where you left off.</p>
 
-  <div class="tabs" role="tablist" aria-label="Log in or sign up">
-    <button type="button" role="tab" id="t-login" aria-selected="true" aria-controls="f">Log in</button>
-    <button type="button" role="tab" id="t-signup" aria-selected="false" aria-controls="f">Sign up</button>
+    <div class="tabs" role="tablist" aria-label="Log in or sign up">
+      <button type="button" role="tab" id="t-login"
+        aria-selected="true" aria-controls="f">Log in</button>
+      <button type="button" role="tab" id="t-signup"
+        aria-selected="false" aria-controls="f">Sign up</button>
+    </div>
+
+    <form id="f" role="tabpanel" aria-labelledby="t-login" novalidate>
+      <label id="nameRow" hidden>
+        Name
+        <input id="name" autocomplete="name" maxlength="60">
+      </label>
+
+      <label>
+        Email
+        <input id="email" type="email" autocomplete="email"
+          required maxlength="254">
+      </label>
+
+      <label>
+        Password
+        <input id="pw" type="password" autocomplete="current-password"
+          required minlength="8">
+      </label>
+
+      <label class="chk">
+        <input type="checkbox" id="show">
+        Show password
+      </label>
+
+      <label class="chk">
+        <input type="checkbox" id="rem" checked>
+        Keep me signed in on this device
+      </label>
+
+      <p class="err" id="err" role="alert" aria-live="polite"></p>
+      <button type="submit" class="btn" style="width:100%" id="go">
+        Log in
+      </button>
+    </form>
+
+    <div class="google-divider"><span>or</span></div>
+
+    <div id="googleSignIn" class="google-signin"></div>
+    <p class="err" id="googleErr" role="alert" aria-live="polite"></p>
+
+    <button type="button" class="btn ghost guest" id="guest">
+      Continue as a guest
+    </button>
+
+    <a class="back" href="index.html">Back to home</a>
   </div>
+</main>
 
-  <form id="f" role="tabpanel" novalidate>
-    <label id="nameRow" hidden>Name<input id="name" autocomplete="name" maxlength="60"></label>
-    <label>Email<input id="email" type="email" autocomplete="email" required></label>
-    <label>Password<input id="pw" type="password" autocomplete="current-password" required></label>
-    <label class="chk"><input type="checkbox" id="show"> Show password</label>
-    <label class="chk"><input type="checkbox" id="rem" checked> Keep me signed in on this device</label>
-    <p class="err" id="err" role="alert"></p>
-    <button class="btn" style="width:100%" id="go">Log in</button>
-  </form>
-  
-<div class="google-divider"><span>or</span></div>
-
-<div id="googleSignIn" class="google-signin"></div>
-<p class="err" id="googleErr" role="alert"></p>
-
-<button type="button" class="btn ghost guest" id="guest">
-  Continue as a guest
-</button>
-
-  <a class="back" href="index.html">Back to home</a>
-</div></main>
-
-<script src="https://accounts.google.com/gsi/client" async defer></script>
 <script src="js/auth.js"></script>
-
 <script>
-const $ = id => document.getElementById(id);
+(() => {
+  "use strict";
 
-const GOOGLE_CLIENT_ID =
-  "975102357812-e3osguv8vvokagfprs19f9j9h0jjd6nv.apps.googleusercontent.com";
+  const $ = id => document.getElementById(id);
+  const form = $("f");
+  const submitButton = $("go");
+  const googleButton = $("googleSignIn");
+  const googleError = $("googleErr");
+  const formError = $("err");
 
-let mode = "login";
+  let mode = "login";
+  let googleInitialised = false;
+  let googleAttempts = 0;
+  let googleRetryTimer = null;
 
-const go = () => {
-  location.href = Auth.CFG.appUrl;
-};
-
-if (Auth.user()) {
-  go();
-}
-
-function setMode(m) {
-  mode = m;
-
-  const su = m === "signup";
-
-  $("t-login").setAttribute("aria-selected", String(!su));
-  $("t-signup").setAttribute("aria-selected", String(su));
-
-  $("nameRow").hidden = !su;
-
-  $("title").textContent = su
-    ? "Create your account"
-    : "Welcome back";
-
-  $("sub").textContent = su
-    ? "Start planning your study in a minute."
-    : "Log in to pick up where you left off.";
-
-  $("go").textContent = su ? "Create account" : "Log in";
-  $("pw").autocomplete = su ? "new-password" : "current-password";
-
-  document.title = (su ? "Sign up" : "Log in") + " · Study Platform";
-
-  $("err").textContent = "";
-}
-
-$("t-login").onclick = () => setMode("login");
-$("t-signup").onclick = () => setMode("signup");
-
-$("show").onchange = () => {
-  $("pw").type = $("show").checked ? "text" : "password";
-};
-
-if (new URLSearchParams(location.search).get("mode") === "signup") {
-  setMode("signup");
-}
-
-// Email and password authentication
-$("f").onsubmit = async e => {
-  e.preventDefault();
-
-  const email = $("email").value;
-  const pw = $("pw").value;
-  const name = $("name").value;
-  const rem = $("rem").checked;
-
-  if (!email.trim() || !pw) {
-    $("err").textContent = "Enter your email and password.";
-    return;
+  function showError(element, message) {
+    if (element) element.textContent = message || "";
   }
 
-  $("go").disabled = true;
-  $("err").textContent = "";
-
-  try {
-    if (mode === "signup") {
-      await Auth.signup(name, email, pw, rem);
+  function go() {
+    if (typeof Auth.redirectAfterLogin === "function") {
+      Auth.redirectAfterLogin();
     } else {
-      await Auth.login(email, pw, rem);
+      location.href = Auth.CFG.appUrl;
     }
-
-    go();
-  } catch (x) {
-    $("err").textContent =
-      x.message || "Something went wrong. Try again.";
-
-    $("go").disabled = false;
-  }
-};
-
-// Google sign-in
-function decodeGoogleCredential(credential) {
-  const parts = credential.split(".");
-
-  if (parts.length !== 3) {
-    throw new Error("Invalid Google credential.");
   }
 
-  const payload = parts[1]
-    .replace(/-/g, "+")
-    .replace(/_/g, "/");
-
-  const padded = payload.padEnd(
-    payload.length + (4 - payload.length % 4) % 4,
-    "="
-  );
-
-  const bytes = Uint8Array.from(
-    atob(padded),
-    c => c.charCodeAt(0)
-  );
-
-  return JSON.parse(new TextDecoder().decode(bytes));
-}
-
-function handleGoogleResponse(response) {
-  const error = $("googleErr");
-
-  if (error) error.textContent = "";
-
+  // Redirect an already authenticated user.
   try {
-    const profile = decodeGoogleCredential(response.credential);
+    if (Auth.user()) {
+      go();
+      return;
+    }
+  } catch (error) {
+    console.error("Could not read the current session.", error);
+  }
 
-    // This browser-side check is not a substitute for
-    // server-side Google ID-token verification.
-    if (
-      !profile.sub ||
-      !profile.email ||
-      profile.email_verified !== true
-    ) {
-      throw new Error(
-        "Google could not verify your account details."
-      );
+  function setMode(nextMode) {
+    mode = nextMode;
+    const signup = mode === "signup";
+
+    $("t-login").setAttribute("aria-selected", String(!signup));
+    $("t-signup").setAttribute("aria-selected", String(signup));
+    $("nameRow").hidden = !signup;
+    $("name").required = signup;
+    $("pw").autocomplete = signup ? "new-password" : "current-password";
+
+    $("title").textContent = signup
+      ? "Create your account"
+      : "Welcome back";
+
+    $("sub").textContent = signup
+      ? "Start planning your study in a minute."
+      : "Log in to pick up where you left off.";
+
+    submitButton.textContent = signup ? "Create account" : "Log in";
+    form.setAttribute("aria-labelledby", signup ? "t-signup" : "t-login");
+    document.title = (signup ? "Sign up" : "Log in") + " · Study Platform";
+
+    showError(formError, "");
+  }
+
+  $("t-login").addEventListener("click", () => setMode("login"));
+  $("t-signup").addEventListener("click", () => setMode("signup"));
+
+  $("show").addEventListener("change", () => {
+    $("pw").type = $("show").checked ? "text" : "password";
+  });
+
+  if (new URLSearchParams(location.search).get("mode") === "signup") {
+    setMode("signup");
+  }
+
+  // Email and password.
+  form.addEventListener("submit", async event => {
+    event.preventDefault();
+
+    const email = $("email").value.trim();
+    const password = $("pw").value;
+    const name = $("name").value.trim();
+    const remember = $("rem").checked;
+
+    showError(formError, "");
+
+    if (!email || !password) {
+      showError(formError, "Enter your email and password.");
+      return;
     }
 
-    Auth.googleLogin(
-      {
+    if (mode === "signup" && !name) {
+      showError(formError, "Enter your name.");
+      $("name").focus();
+      return;
+    }
+
+    submitButton.disabled = true;
+
+    try {
+      if (mode === "signup") {
+        await Auth.signup(name, email, password, remember);
+      } else {
+        await Auth.login(email, password, remember);
+      }
+
+      go();
+    } catch (error) {
+      showError(
+        formError,
+        error.message || "Something went wrong. Please try again."
+      );
+      submitButton.disabled = false;
+    }
+  });
+
+  // Google Identity Services.
+  function initialiseGoogleSignIn() {
+    if (googleInitialised) return;
+
+    if (!window.google?.accounts?.id) {
+      googleAttempts++;
+
+      if (googleAttempts >= 20) {
+        showError(
+          googleError,
+          "Google sign-in could not load. Check your internet connection and refresh the page."
+        );
+        return;
+      }
+
+      googleRetryTimer = setTimeout(initialiseGoogleSignIn, 300);
+      return;
+    }
+
+    try {
+      googleInitialised = true;
+
+      google.accounts.id.initialize({
+        client_id: Auth.CFG.googleClientId,
+        callback: handleGoogleResponse,
+        auto_select: false
+      });
+
+      googleButton.replaceChildren();
+
+      google.accounts.id.renderButton(googleButton, {
+        type: "standard",
+        theme: "outline",
+        size: "large",
+        text: "continue_with",
+        shape: "rectangular",
+        logo_alignment: "left",
+        width: Math.min(320, googleButton.clientWidth || 320)
+      });
+    } catch (error) {
+      googleInitialised = false;
+      console.error("Google initialisation failed.", error);
+      showError(googleError, "Could not initialise Google sign-in. Please refresh.");
+    }
+  }
+
+  async function handleGoogleResponse(response) {
+    showError(googleError, "");
+
+    try {
+      if (!response?.credential) {
+        throw new Error("Google did not return a sign-in credential.");
+      }
+
+      if (typeof Auth.googleLogin !== "function") {
+        throw new Error(
+          "Google sign-in is unavailable. Check that js/auth.js is updated."
+        );
+      }
+
+      // Decode the token payload. This is not cryptographic verification.
+      const parts = response.credential.split(".");
+      if (parts.length !== 3) {
+        throw new Error("Invalid Google credential.");
+      }
+
+      const payload = parts[1]
+        .replace(/-/g, "+")
+        .replace(/_/g, "/");
+
+      const padded = payload.padEnd(
+        payload.length + (4 - payload.length % 4) % 4,
+        "="
+      );
+
+      const bytes = Uint8Array.from(atob(padded), char => char.charCodeAt(0));
+      const profile = JSON.parse(new TextDecoder().decode(bytes));
+
+      if (profile.aud !== Auth.CFG.googleClientId) {
+        throw new Error("Google returned a credential for a different application.");
+      }
+
+      if (profile.exp && Date.now() >= profile.exp * 1000) {
+        throw new Error("Your Google sign-in has expired. Please try again.");
+      }
+
+      if (!profile.sub || !profile.email || profile.email_verified !== true) {
+        throw new Error("Google could not verify your account details.");
+      }
+
+      googleButton.style.pointerEvents = "none";
+
+      await Auth.googleLogin({
+        sub: profile.sub,
         id: profile.sub,
         name: profile.name || profile.email.split("@")[0],
-        email: profile.email
-      },
-      $("rem").checked
-    ).then(() => {
+        email: profile.email,
+        email_verified: profile.email_verified,
+        picture: profile.picture || ""
+      }, $("rem").checked);
+
       go();
-    }).catch(x => {
-      if (error) {
-        error.textContent =
-          x.message || "Google sign-in failed. Please try again.";
-      }
-    });
-  } catch (x) {
-    if (error) {
-      error.textContent =
-        x.message || "Google sign-in failed. Please try again.";
+    } catch (error) {
+      showError(
+        googleError,
+        error.message || "Google sign-in failed. Please try again."
+      );
+    } finally {
+      googleButton.style.pointerEvents = "";
     }
   }
-}
 
-function initialiseGoogleSignIn() {
-  const container = $("googleSignIn");
+  // Guest access.
+  $("guest").addEventListener("click", () => {
+    showError(formError, "");
 
-  if (!container) {
-    console.error(
-      'Google sign-in container "#googleSignIn" was not found.'
-    );
-    return;
-  }
+    try {
+      if (typeof Auth.guest !== "function") {
+        throw new Error(
+          "Guest access is unavailable. Add Auth.guest() to js/auth.js."
+        );
+      }
 
-  if (!window.google?.accounts?.id) {
-    // The Google Identity Services script may still be loading.
-    setTimeout(initialiseGoogleSignIn, 250);
-    return;
-  }
-
-  google.accounts.id.initialize({
-    client_id: GOOGLE_CLIENT_ID,
-    callback: handleGoogleResponse
+      Auth.guest();
+      go();
+    } catch (error) {
+      showError(formError, error.message || "Could not start guest access.");
+    }
   });
 
-  container.innerHTML = "";
-
-  google.accounts.id.renderButton(container, {
-    type: "standard",
-    theme: "outline",
-    size: "large",
-    text: "continue_with",
-    shape: "rectangular",
-    logo_alignment: "left",
-    width: Math.min(container.clientWidth || 320, 400)
-  });
-}
-
-// Guest access
-$("guest").onclick = () => {
-  try {
-    Auth.guest();
-    go();
-  } catch (x) {
-    $("err").textContent = x.message;
+  // Start Google initialisation after the page is ready.
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initialiseGoogleSignIn, {
+      once: true
+    });
+  } else {
+    initialiseGoogleSignIn();
   }
-};
 
-// Start Google sign-in once the page has loaded.
-initialiseGoogleSignIn();
+  window.addEventListener("pagehide", () => {
+    if (googleRetryTimer) clearTimeout(googleRetryTimer);
+  });
+})();
 </script>
-
 </body>
 </html>
